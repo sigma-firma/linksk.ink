@@ -38,6 +38,7 @@ func exeTmpl(w http.ResponseWriter, r *http.Request, view *viewData, tmpl string
 	if view == nil {
 		view = &viewData{
 			AppName: AppName,
+			Stream:  stream,
 		}
 	}
 	err := templates.ExecuteTemplate(w, tmpl, view)

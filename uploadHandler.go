@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -64,17 +65,16 @@ func partFormData(r *http.Request, w http.ResponseWriter) *item {
 				log.Println(err)
 			}
 			// p := buf.String()
-			// p := getData(buf.String())
-			// if p == nil {
-			// 	fmt.Println("Error:", err)
-			// 	ajaxResponse(w, map[string]string{
-			// 		"success": "false",
-			// 		"msg":     "bad link",
-			// 	})
-			// 	return nil
-			// }
-
-			// data = p
+			data.Link = buf.String()
+			getData(data)
+			if data.Status != "downloaded" {
+				fmt.Println("Error:", err)
+				ajaxResponse(w, map[string]string{
+					"success": "false",
+					"msg":     "bad link",
+				})
+				return nil
+			}
 		}
 	}
 	return data
@@ -101,24 +101,18 @@ func readDB() {
 	}
 
 	if len(content) > 0 {
-		log.Println(" dpxcpwoxc")
 		err := json.Unmarshal(content, db)
 		if err != nil {
 			log.Println(err)
 		}
-		db.Pages = db.Pages[:50]
+		// db.Pages = db.Pages[:50]
 		slices.Reverse(db.Pages)
-		for _, p := range db.Pages {
-			if p.Status == "complete" {
-				stream = append(stream, p)
-			}
-		}
+		stream = append(stream, db.Pages[:30]...)
 
 		for _, item := range stream {
 			itemsMap[item.ID] = item
 		}
 	}
-	log.Println(stream)
 }
 
 func saveJSON() {

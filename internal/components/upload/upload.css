@@ -9,8 +9,8 @@ input, textarea {
     opacity: 1; /* Firefox */
 }
 .ip-img {
-    height: 50vh;
-    width: 100%;
+    /* height: 50vh; */
+    /* width: 100%; */
     background-size: cover;
     border-radius: 0.3em;
     margin: 0.8em 0;
@@ -63,50 +63,53 @@ input, textarea {
     border-radius: 0.4em;
 }
 .ip-title {
-    background-color: white;
+ background-color: white;
     padding: 0.2em;
     border-radius: 0.2em;
     color: #5e5e5e;
+width: inherit;
     font-size: 2.1em;
     font-family: "Noto Serif Display", serif;
     font-optical-sizing: auto;
     font-weight: 500;
+    overflow: hidden;
     font-style: normal;
     font-variation-settings: "wdth" 100;
 }
 .ip-content {
-    margin: 1em 0.2em;
-    text-align: justify;
-    font-family: "Noto Serif Display", serif;
-    font-optical-sizing: auto;
+text-align: justify;
+    /* font-family: "Noto Serif Display", serif; */
+    /* font-optical-sizing: auto; */
     font-weight: 300;
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
-    position: absolute;
-    max-width: 100%;
+    /* font-style: normal; */
+    /* font-variation-settings: "wdth" 100; */
+    /* max-width: 40%; */
     background: linear-gradient(0deg, #ffffff 46%, transparent);
-    left: 0;
-    bottom: -11px;
+    /* left: 0; */
+    /* bottom: -11px; */
     padding: 0.5em;
-    height: 48%;
+    /* height: 48%; */
     display: flex;
-    align-items: flex-end;
-    backdrop-filter: blur(3px);
-    color: black;
+    width: inherit;
+    /* align-items: flex-end; */
+    /* backdrop-filter: blur(3px); */
+    /* color: black; */
+    max-height: 30vh;
+    overflow: hidden;
 }
 .next-lines {
     margin: 0.8rem 0.5em;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: flex
+;
     padding: 0.6em;
     border-radius: 0.3em;
     font-size: 0.9em;
-    align-items: stretch;
-    flex-direction: column;
     background: #f0f0f0;
     color: #353535;
-    position: relative;
+    max-width: 91vw;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
 }
 .About {
     width: 100%;
