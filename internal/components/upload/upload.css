@@ -1,0 +1,122 @@
+body, html {
+    margin: 3em 0.5em;
+}
+input, textarea {
+    border: none;
+}
+::placeholder {
+    color: var(--html-bg);
+    opacity: 1; /* Firefox */
+}
+.ip-img {
+    height: 50vh;
+    width: 100%;
+    background-size: cover;
+    border-radius: 0.3em;
+    margin: 0.8em 0;
+}
+.stream {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 0.5em;
+}
+.uploadForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+    margin: 1em;
+}
+.uploadForm > * {
+    padding: 0.3em;
+    width: 100%;
+    border-radius: 0.3em;
+    margin-top: 0.5em;
+    background: #FFFFFF;
+    border: 1px solid #e8e8e8;
+}
+.form-submit {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    background: #f38d1c;
+    border: 1px solid orange;
+    color: white;
+}
+/* .stream > div { */
+/*     margin: 0.5em; */
+/*     padding: 0.5em; */
+/*     border-radius: 0.4em; */
+/*     width: 25%; */
+/*     display: flex; */
+/*     flex-direction: column; */
+/*     flex-wrap: nowrap; */
+/*     flex-grow: 1; */
+/*     justify-content: space-between; */
+/*     align-items: stretch; */
+/*     background: #f1f1f1; */
+/*     cursor: pointer; */
+/* } */
+.media-item > img {
+    width: 100%;
+    border-radius: 0.4em;
+}
+.ip-title {
+    background-color: white;
+    padding: 0.2em;
+    border-radius: 0.2em;
+    color: #5e5e5e;
+    font-size: 2.1em;
+    font-family: "Noto Serif Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+.ip-content {
+    margin: 1em 0.2em;
+    text-align: justify;
+    font-family: "Noto Serif Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    position: absolute;
+    max-width: 100%;
+    background: linear-gradient(0deg, #ffffff 46%, transparent);
+    left: 0;
+    bottom: -11px;
+    padding: 0.5em;
+    height: 48%;
+    display: flex;
+    align-items: flex-end;
+    backdrop-filter: blur(3px);
+    color: black;
+}
+.next-lines {
+    margin: 0.8rem 0.5em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0.6em;
+    border-radius: 0.3em;
+    font-size: 0.9em;
+    align-items: stretch;
+    flex-direction: column;
+    background: #f0f0f0;
+    color: #353535;
+    position: relative;
+}
+.About {
+    width: 100%;
+}
+@media screen and (orientation:landscape) {
+    body, html {
+        max-width: 80ch;
+    }
+    .stream {
+        max-width: 80ch;
+    }
+}
+

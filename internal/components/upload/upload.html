@@ -1,0 +1,17 @@
+<form class="uploadForm" id='uploadForm' enctype='multipart/form-data'>
+	<input id='Link' type='text' name='Link'  placeholder='Link'/>
+	<div onclick="submitPost()" value="submit" class="form-submit" id="submit-butt" >submit</div>
+</form>
+<style>{{ template "upload.css" . }}</style>
+<script>{{ template "upload.js" . }}</script>
+<div class='stream'>
+	{{ range $k, $v :=  .Stream }}
+	<div class='item-outer' onclick="window.open('{{$v.Link}}', '_blank');">
+		<div class='next-lines'>
+			<div class='item-part Link ip-title'>{{ $v.Title }}</div>
+			<div class='item-part Link ip-content'>{{ $v.Content }}</div>
+			<div class='item-part Link ip-img' style="background: url({{ $v.Image }}); background-size: cover;"> </div>
+		</div>
+	</div>
+	{{ end }}
+</div>

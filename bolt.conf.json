@@ -1,0 +1,23 @@
+{
+  "app": {
+    "name": "Think big, think SKINK!",
+    "command": "",
+    "domain_name": "linksk.ink",
+    "version": "0.01",
+    "env": {},
+    "port": "17297",
+    "alertsOn": true,
+    "tls_enabled": false,
+    "repo": "https://github.com/sigma-firma.com/linksk.ink"
+  },
+  "gcloud": {
+    "command": "gcloud",
+    "zone": "us-central1-a",
+    "project": "mysterygift",
+    "user": "john",
+    "livedir": "/home/john/live/",
+    "instance": "main",
+    "proxy_home": "/home/john/bp/",
+    "proxyConf": ""
+  }
+}

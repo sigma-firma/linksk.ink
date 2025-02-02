@@ -1,0 +1,43 @@
+.flip-inner {
+    height: 25vh;
+    width: 50vw;
+    background: linear-gradient(45deg, #f1421cbd 16.6%, #eaa320d4 33.6%, #fbfb07cf 49.6%, #79ca13cc 66.6%, #0c98bbc7 83.6%, #d61fd6d4 100.6%);
+    align-self: center;
+    margin-top: 37.5vh;
+    border-radius: 1.3em;
+    animation: 3s linear infinite flip;
+    animation-fill-mode:both;
+    transform: rotate3d(0, 0, 0, 0deg);
+}
+.flip-outer {
+    animation: 3s linear infinite hro;
+}
+@keyframes flip {
+    0% {
+        transform: rotate3d(360, 360, 360, 360deg) scale(2);
+    }
+    33% {
+        transform: rotate3d(0, 0, 0, 0deg) scale(1);
+        /* transform: rotate3d(150, 150, 150, 90deg) scale(1.5); */
+    }
+    66% {
+        transform: rotate3d(360, 360, 360, 360deg) scale(2);
+    }
+    100% {
+
+        transform: rotate3d(0, 0, 0, 0deg) scale(1);
+    }
+}
+@keyframes hro {
+    0% {
+        filter: hue-rotate(0deg) blur(30px);
+    }
+    75% {
+        filter: hue-rotate(1440deg) blur(74px);
+        /* filter: hue-rotate(720deg) blur(37px); */
+    }
+    100% {
+        filter: hue-rotate(0deg) blur(30px);
+
+    }
+}
