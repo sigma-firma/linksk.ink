@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -64,17 +63,18 @@ func partFormData(r *http.Request, w http.ResponseWriter) *item {
 			if err != nil {
 				log.Println(err)
 			}
-			p := getData(buf.String())
-			if p == nil {
-				fmt.Println("Error:", err)
-				ajaxResponse(w, map[string]string{
-					"success": "false",
-					"msg":     "bad link",
-				})
-				return nil
-			}
+			// p := buf.String()
+			// p := getData(buf.String())
+			// if p == nil {
+			// 	fmt.Println("Error:", err)
+			// 	ajaxResponse(w, map[string]string{
+			// 		"success": "false",
+			// 		"msg":     "bad link",
+			// 	})
+			// 	return nil
+			// }
 
-			data = p
+			// data = p
 		}
 	}
 	return data
