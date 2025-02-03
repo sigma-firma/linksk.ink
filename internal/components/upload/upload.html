@@ -6,11 +6,12 @@
 <script>{{ template "upload.js" . }}</script>
 <div class='stream'>
 	{{ range $k, $v :=  .Stream }}
-	<div class='item-outer' onclick="window.open('{{$v.Link}}', '_blank');">
+	<div class="item-outer">
 		<div class='next-lines'>
-			<div class='item-part Link ip-title'>{{ $v.Title }}</div>
+			<div class='item-part Link ip-title'onclick="window.open('http://{{$v.Link}}', '_blank');">{{ $v.Title }}</div>
+			<div class='item-part Link ip-img' style="background: url({{ $v.Image }}); background-size: cover; background-position: center;"> </div>
 			<div class='item-part Link ip-content'>{{ $v.Content }}</div>
-			<div class='item-part Link ip-img' style="background: url({{ $v.Image }}); background-size: cover;"> </div>
+			<div class='item-part Link ip-link' >{{ $v.Link }}</div>
 		</div>
 	</div>
 	{{ end }}

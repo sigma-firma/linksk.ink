@@ -53,6 +53,11 @@ func partFormData(r *http.Request, w http.ResponseWriter) *item {
 
 	var data *item = &item{ID: genPostID(10)}
 
+	data.Phrases = make(map[string]int)
+	data.ImgsWithAlts = make(map[string][]string)
+	data.ContentMap = make(map[string]int)
+	data.Links = make(map[string]int)
+
 	for {
 		part, err_part := mr.NextPart()
 		if err_part == io.EOF {
@@ -67,7 +72,9 @@ func partFormData(r *http.Request, w http.ResponseWriter) *item {
 			// p := buf.String()
 			data.Link = buf.String()
 			getData(data)
-			if data.Status != "downloaded" {
+			getImageLinkAndAltText(data)
+			getTitleAndContent(data)
+			if data.Status != "content" {
 				fmt.Println("Error:", err)
 				ajaxResponse(w, map[string]string{
 					"success": "false",
@@ -127,7 +134,7 @@ func saveJSON() {
 	var stream_ []*item = make([]*item, len(stream))
 	copy(stream_, stream)
 	slices.Reverse(stream_)
-	b, err := json.Marshal(stream_)
+	b, err := json.Marshal(&database{Pages: stream_})
 	if err != nil {
 		log.Println(err)
 	}
@@ -140,23 +147,44 @@ func saveJSON() {
 }
 
 type item struct {
-	FileElement string    `json:"FileElement"`
-	Link        string    `json:"Link"`
-	Say_IT      string    `json:"Say IT"`
-	ID          string    `json:"ID"`
-	TS          time.Time `json:"TS"`
-	Status      string
-	// StatusChan   chan any
-	MediaType    string `json:"mediaType"`
-	TempFileName string `json:"tempFileName"`
-	Title        string `json:"title"`
-	Text         string `json:"text"`
-	HTML         string
-	Image        string
-	Content      []string `json:"content"`
-	Links        []string `json:"links"`
-	Images       []string `json:"images"`
-	LastChecked  time.Time
+	FileElement  string    `json:"FileElement"`
+	Link         string    `json:"Link"`
+	ID           string    `json:"ID"`
 	Submitted    time.Time `json:"submitted"`
+	LastChecked  time.Time
+	Status       string
+	Title        string `json:"title"`
+	Content      string `json:"content"`
+	HTML         string
+	Text         string `json:"text"`
+	Image        string
+	Links        map[string]int `json:"links"`
+	Images       []string       `json:"images"`
 	LastErr      string
+	Phrases      map[string]int
+	ContentMap   map[string]int
+	ImgsWithAlts map[string][]string
 }
+
+// type item struct {
+// 	Link        string    `json:"Link"`
+// 	Say_IT      string    `json:"Say IT"`
+// 	ID          string    `json:"ID"`
+// 	TS          time.Time `json:"TS"`
+// 	Status      string
+// 	// StatusChan   chan any
+// 	MediaType    string `json:"mediaType"`
+// 	TempFileName string `json:"tempFileName"`
+// 	Title        string `json:"title"`
+// 	Text         string `json:"text"`
+// 	HTML         string
+// 	Image        string
+// 	Content      []string `json:"content"`
+// 	Links        []string `json:"links"`
+// 	Images       []string `json:"images"`
+// 	LastChecked  time.Time
+// 	Submitted    time.Time `json:"submitted"`
+// 	LastErr      string
+
+// 	ImgsWithAlts map[string][]string
+// }

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"io"
 	"log"
 	"net/http"
@@ -98,13 +99,29 @@ func getRes(p *item) *http.Response {
 	client := http.Client{
 		Timeout: 4 * time.Second,
 	}
-	res, err := client.Get("http://" + p.Link)
+	res, err := client.Get(p.Link)
 	if err != nil {
 		log.Println(err)
 		p.LastErr = fmt.Sprint(err)
 		return nil
 	}
 	return res
+}
+func getTitleAndContent(p *item) *item {
+	for _, l := range strings.Split(p.HTML, "content=\"") {
+		c := strings.Split(l, "\"")[0]
+		if !strings.ContainsAny(c, "/><=") && strings.Count(c, " ") > 1 {
+			if p.Content == "" {
+				p.Content = c
+			}
+			p.ContentMap[c] = 1
+		}
+	}
+
+	title_ := strings.Split(strings.Split(p.HTML, "</title>")[0], ">")
+	p.Title = html.UnescapeString(title_[len(title_)-1])
+	p.Status = "content"
+	return p
 }
 func getData(p *item) *item {
 	l := p.Link
@@ -133,46 +150,100 @@ func getData(p *item) *item {
 	// downloadIMG(p)
 	return p
 }
-func mapout(p *item) {
-	checkedLast = make(map[string]*hyper)
-	checkedLast[p.Link] = &hyper{}
-	checkedLast[p.Link].Links = make(map[string]int)
-	checkedLast[p.Link].Images = make(map[string]int)
-	for _, s := range linePics(p.HTML, p.Link) {
-		u_ := strings.Split(strings.Split(strings.Split(s, "\"")[0], " ")[0], "'")[0]
-		u_ = strings.ReplaceAll(u_, ":", "_")
-		if len(u_) > 10 && len(u_) < 600 && !doesntContain(u_) {
-			u_ = decu(u_)
-			u_ = strings.ReplaceAll(u_, " ", "")
-			u, err := url.Parse(u_)
-			if err != nil {
-				log.Println(err, u)
-				return
-			}
-			isimage := false
-			s = strings.ReplaceAll(u.Hostname()+u.EscapedPath(), "_", ":")
-			for _, t := range types {
-				if strings.Contains(s, t) && !strings.Contains(s, " ") {
-					isimage = true
-					checkedLast[p.Link].Images[s] = checkedLast[p.Link].Images[s] + 1
+
+// var types []string = []string{".png", ".jpg", ".jpeg", ".webp", ".webm", ".mp4"}
+var props []string = []string{"src=\"", "alt=\"", "srcset=\""}
+
+func getImageLinkAndAltText(p *item) {
+	imgs := strings.Split(strings.ReplaceAll(p.HTML, "<img", "\n<img"), "\n")
+	if len(imgs) > 0 {
+		for _, im := range imgs {
+			var alt string
+			var set []string
+			for _, pr := range props {
+				if strings.Contains(im, props[0]) && strings.Contains(im, props[1]) {
+					s := strings.Split(strings.Split(im, ">")[0], pr)
+					if len(s) > 1 {
+						switch pr {
+						case props[2]:
+							set = append(set, strings.Split(strings.Split(s[1], "\"")[0], ",")...)
+						case "src=\"":
+							if p.Image == "" {
+								p.Image = strings.Split(strings.Split(s[1], "\"")[0], "?")[0]
+							}
+							set = append(set, strings.Split(strings.Split(s[1], "\"")[0], "?")[0])
+						case "alt=\"":
+							alt = strings.Split(strings.Split(s[1], "\"")[0], "?")[0]
+						}
+					}
 				}
 			}
-			if !isimage {
-				checkedLast[p.Link].Links[s] = checkedLast[p.Link].Links[s] + 1
+
+			for _, sst := range set {
+				if p.ImgsWithAlts[alt] == nil {
+					p.ImgsWithAlts[alt] = []string{}
+				}
+				p.ImgsWithAlts[alt] = append(p.ImgsWithAlts[alt], strings.Split(sst, "?")[0])
 			}
 		}
 	}
-	for _, l := range checkedLast {
-		for img := range l.Images {
-			p.Images = append(p.Images, img)
-		}
-		for link := range l.Links {
-			p.Links = append(p.Links, link)
-		}
-
-	}
-	p.Status = "complete"
 }
+
+type ialt struct {
+	Image string
+	Alt   string
+}
+
+func getImgAndAlt(s string) {
+	s = strings.Join(strings.Fields(s), " ")
+	s = strings.ReplaceAll(s, "<img", "\n<img")
+	// var ia []*ialt = []*ialt{}
+	for _, s_ := range strings.Split(s, "\n<img") {
+		log.Println(strings.Split(s_, ">"))
+		// ia[i].Alt := strings.Split(s, ">")[0]
+	}
+}
+
+// func mapout(p *item) {
+// 	checkedLast = make(map[string]*hyper)
+// 	checkedLast[p.Link] = &hyper{}
+// 	checkedLast[p.Link].Links = make(map[string]int)
+// 	checkedLast[p.Link].Images = make(map[string]int)
+// 	for _, s := range linePics(p.HTML, p.Link) {
+// 		u_ := strings.Split(strings.Split(strings.Split(s, "\"")[0], " ")[0], "'")[0]
+// 		u_ = strings.ReplaceAll(u_, ":", "_")
+// 		if len(u_) > 10 && len(u_) < 600 && !doesntContain(u_) {
+// 			u_ = decu(u_)
+// 			u_ = strings.ReplaceAll(u_, " ", "")
+// 			u, err := url.Parse(u_)
+// 			if err != nil {
+// 				log.Println(err, u)
+// 				return
+// 			}
+// 			isimage := false
+// 			s = strings.ReplaceAll(u.Hostname()+u.EscapedPath(), "_", ":")
+// 			for _, t := range types {
+// 				if strings.Contains(s, t) && !strings.Contains(s, " ") {
+// 					isimage = true
+// 					checkedLast[p.Link].Images[s] = checkedLast[p.Link].Images[s] + 1
+// 				}
+// 			}
+// 			if !isimage {
+// 				checkedLast[p.Link].Links[s] = checkedLast[p.Link].Links[s] + 1
+// 			}
+// 		}
+// 	}
+// 	for _, l := range checkedLast {
+// 		for img := range l.Images {
+// 			p.Images = append(p.Images, img)
+// 		}
+// 		for link := range l.Links {
+// 			p.Links = append(p.Links, link)
+// 		}
+
+//		}
+//		p.Status = "complete"
+//	}
 func doesntContain(u_ string) bool {
 	return !strings.Contains(u_, "google") &&
 		!strings.ContainsAny(u_, ";") &&
@@ -238,27 +309,27 @@ func linePics(s, l string) []string {
 
 var contentmap map[string]int = make(map[string]int)
 
-func getContent(p *item) *item {
-	hypt := p.HTML
-	for _, l := range strings.Split(hypt, "content=\"") {
-		c := strings.Split(l, "\"")[0]
-		if !strings.ContainsAny(c, "/><=") && strings.Count(c, " ") > 1 {
-			contentmap[c] = 1
-		}
-	}
-	title_ := strings.Split(strings.Split(hypt, "</title>")[0], ">")
-	p.Title = title_[len(title_)-1]
-	txt_ := ""
-	for _, txt := range detectText(hypt) {
-		txt_ = txt_ + " " + txt
-	}
-	p.Text = strings.ReplaceAll(strings.Join(strings.Fields(txt_), " "), ".", ". ")
-	for con := range contentmap {
-		p.Content = append(p.Content, con)
-	}
-	p.Status = "content"
-	return p
-}
+// func getContent(p *item) *item {
+// 	hypt := p.HTML
+// 	for _, l := range strings.Split(hypt, "content=\"") {
+// 		c := strings.Split(l, "\"")[0]
+// 		if !strings.ContainsAny(c, "/><=") && strings.Count(c, " ") > 1 {
+// 			contentmap[c] = 1
+// 		}
+// 	}
+// 	title_ := strings.Split(strings.Split(hypt, "</title>")[0], ">")
+// 	p.Title = title_[len(title_)-1]
+// 	txt_ := ""
+// 	for _, txt := range detectText(hypt) {
+// 		txt_ = txt_ + " " + txt
+// 	}
+// 	p.Text = strings.ReplaceAll(strings.Join(strings.Fields(txt_), " "), ".", ". ")
+// 	for con := range contentmap {
+// 		p.Content = append(p.Content, con)
+// 	}
+// 	p.Status = "content"
+// 	return p
+// }
 
 func appendFile(l, fn string) {
 	f, err := os.OpenFile(fn, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0600)
