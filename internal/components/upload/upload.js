@@ -3,7 +3,7 @@ async function submitPost() {
         const data = new FormData(form);
         let response = await fetch("/uploadItem", {
             method: "POST",
-            body: data,
+            body: {"data":data},
         });
 
         let res = await response.json();
