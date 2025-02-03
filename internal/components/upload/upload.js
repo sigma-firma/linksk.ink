@@ -12,7 +12,7 @@ async function submitPost() {
 
     function handleResponse(res) {
         if (res.success == "true") {
-            window.location = window.location.origin;
+            location.reload()
         } else {
             document.getElementById("submit-butt").innerHTML = res.msg;
         }
