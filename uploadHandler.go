@@ -32,7 +32,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	if data == nil {
 		return
 	}
-	// stream = append([]*item{data}, stream...)
+	stream = append([]*item{data}, stream...)
 
 	b, err := json.Marshal(data)
 	if err != nil {
