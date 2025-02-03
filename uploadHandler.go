@@ -114,7 +114,7 @@ func readDB() {
 		}
 		// db.Pages = db.Pages[:50]
 		slices.Reverse(db.Pages)
-		stream = append(stream, db.Pages[:30]...)
+		stream = append(stream, db.Pages...)
 
 		for _, item := range stream {
 			itemsMap[item.ID] = item
