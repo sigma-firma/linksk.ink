@@ -1,12 +1,16 @@
 .flip-inner {
-    height: 25vh;
-    width: 50vw;
-    background: linear-gradient(45deg, #f1421cbd 16.6%, #eaa320d4 33.6%, #fbfb07cf 49.6%, #79ca13cc 66.6%, #0c98bbc7 83.6%, #d61fd6d4 100.6%);
+    height: 3em;
+    width: 4em;
+    background: linear-gradient(45deg, #f15b1cbd 16.6%, #ffa500d4 33.6%, #d9d900cf 49.6%, #b2d241cc 66.6%, #16d1bac7 83.6%, #d61fd6d4 100.6%);
     align-self: center;
-    margin-top: 37.5vh;
-    border-radius: 1.3em;
-    animation: 3s linear infinite flip;
-    animation-fill-mode:both;
+    margin: 0.5em;
+    justify-self: right;
+border-top-right-radius: 1.3em;
+    border-top-left-radius: 2em;
+    border-bottom-left-radius: 2em;
+    border-bottom-right-radius: 1.3em;
+    animation: 3s linear flip;
+    animation-fill-mode: forwards;
     transform: rotate3d(0, 0, 0, 0deg);
 }
 .flip-outer {
@@ -14,30 +18,29 @@
 }
 @keyframes flip {
     0% {
-        transform: rotate3d(360, 360, 360, 360deg) scale(2);
-    }
-    33% {
-        transform: rotate3d(0, 0, 0, 0deg) scale(1);
-        /* transform: rotate3d(150, 150, 150, 90deg) scale(1.5); */
-    }
-    66% {
-        transform: rotate3d(360, 360, 360, 360deg) scale(2);
-    }
-    100% {
-
-        transform: rotate3d(0, 0, 0, 0deg) scale(1);
-    }
-}
-@keyframes hro {
-    0% {
-        filter: hue-rotate(0deg) blur(30px);
+        width: 4em;
+        transform: rotate3d(0, 0, 0, 0deg) scale(2);
     }
     75% {
-        filter: hue-rotate(1440deg) blur(74px);
+        width: 4em;
+        transform: rotate3d(360, 360, 360, 360deg) scale(1);
+        /* transform: rotate3d(150, 150, 150, 90deg) scale(1.5); */
+    }
+    100%{
+        transform: rotate3d(360, 360, 360, 360deg) scale(1);
+        width: calc(100vw - 1em);
+    }
+   }
+@keyframes hro {
+    0% {
+        filter: hue-rotate(0deg) blur(3px);
+    }
+    75% {
+        filter: hue-rotate(1440deg) blur(7px);
         /* filter: hue-rotate(720deg) blur(37px); */
     }
     100% {
-        filter: hue-rotate(0deg) blur(30px);
+        filter: hue-rotate(0deg) blur(3px);
 
     }
 }
