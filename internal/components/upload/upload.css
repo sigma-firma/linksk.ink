@@ -5,7 +5,7 @@ input, textarea {
     border: none;
 }
 ::placeholder {
-    color: var(--html-bg);
+    color: #da5a31;
     opacity: 1; /* Firefox */
 }
 .ip-img {
@@ -21,29 +21,32 @@ input, textarea {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
-    margin: 0.5em;
+    margin: 3em 0.5em;
 }
 .uploadForm {
-    display: flex;
-    flex-direction: column;
+      display: flex;
+    flex-direction: row;
     margin-bottom: 1em;
     margin: 1em;
-}
+    flex-wrap: nowrap;
+    align-items: stretch;}
 .uploadForm > * {
-    padding: 0.3em;
+ padding: 0.1em;
     width: 100%;
     border-radius: 0.3em;
-    margin-top: 0.5em;
+    /* margin-top: 0.5em; */
     background: #FFFFFF;
-    border: 1px solid #e8e8e8;
-}
+    border: 1px solid #e8e8e8;}
 .form-submit {
     text-align: center;
     padding-left: 0;
     padding-right: 0;
-    background: #f38d1c;
-    border: 1px solid orange;
-    color: white;
+    background: #fff6c7;
+    /* border: 1px solid orange; */
+    color: #da5a31;
+    font-size: 0.8em;
+    margin: 0 0.5em;
+
 }
 /* .stream > div { */
 /*     margin: 0.5em; */

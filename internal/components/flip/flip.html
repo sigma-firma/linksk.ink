@@ -1,5 +1,10 @@
 <div class="template-wrapper flip-outer" id="flip-outer">
-    <div class="flip-inner"></div>
-<style>{{ template "flip.css" . }}</style>
-<script>{{ template "flip.js" . }}</script>
+    <div class="flip-inner">linkskink</div>
+    <form class="uploadForm" id='uploadForm' enctype='multipart/form-data'>
+        <input id='Link' type='text' name='Link'  placeholder='link'/>
+        <div onclick="submitPost()" value="submit" class="form-submit" id="submit-butt" >submit</div>
+    </form>
+    <div class="flip-plus">+</div>
+    <style>{{ template "flip.css" . }}</style>
+    <script>{{ template "flip.js" . }}</script>
 </div>
