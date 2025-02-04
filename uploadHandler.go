@@ -74,11 +74,11 @@ func partFormData(r *http.Request, w http.ResponseWriter) *item {
 			getData(data)
 			getImageLinkAndAltText(data)
 			getTitleAndContent(data)
-			if data.Status != "content" {
+			if data.Title == "" || data.Content == "" || data.Image == "" {
 				fmt.Println("Error:", err)
 				ajaxResponse(w, map[string]string{
 					"success": "false",
-					"msg":     "bad link",
+					"msg":     "couldn't skink",
 				})
 				return nil
 			}
@@ -113,8 +113,14 @@ func readDB() {
 			log.Println(err)
 		}
 		// db.Pages = db.Pages[:50]
-		slices.Reverse(db.Pages)
-		stream = append(stream, db.Pages...)
+		var fixing *database = &database{Pages: []*item{}}
+		for _, data := range db.Pages {
+			if data.Title == "" || data.Content == "" || data.Image == "" {
+				fixing.Pages = append(fixing.Pages, data)
+			}
+		}
+		// slices.Reverse(db.Pages)
+		stream = append(stream, fixing.Pages...)
 
 		for _, item := range stream {
 			itemsMap[item.ID] = item
